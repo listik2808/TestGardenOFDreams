@@ -1,6 +1,7 @@
 ﻿using Scripts.Infrastructure.AssetManagement;
 using Scripts.Infrastructure.Factory;
 using Scripts.Infrastructure.Services;
+using Scripts.Infrastructure.Services.PersistenProgress;
 
 namespace Scripts.Infrastructure.States
 {
@@ -37,8 +38,9 @@ namespace Scripts.Infrastructure.States
 
         private void RegisterServices()
         {
-           _services.RegisterSingle<IAsset>(new AssetProvider());
-           _services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IAsset>()));
+            _services.RegisterSingle<IAsset>(new AssetProvider());
+            _services.RegisterSingle<IPersistenProgressService>(new PersistenProgressService());
+            _services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IAsset>()));
         }
     }
 }
