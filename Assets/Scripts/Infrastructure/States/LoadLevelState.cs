@@ -24,6 +24,7 @@ namespace Scripts.Infrastructure.States
         public void Exit()
         {
         }
+
         private void OnLoaded()
         {
             GameObject had = _gameFactory.CreateHud();

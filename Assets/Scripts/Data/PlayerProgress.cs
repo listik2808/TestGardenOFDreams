@@ -1,6 +1,4 @@
-﻿
-
-namespace Scripts.Data
+﻿namespace Scripts.Data
 {
     public class PlayerProgress
     {
