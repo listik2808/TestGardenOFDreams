@@ -1,30 +1,32 @@
-﻿using System;
+﻿using Scripts.Infrastructure.Factory;
+using Scripts.Infrastructure.Services;
+using System;
 using System.Collections.Generic;
 
-namespace Scripts.Infrastructure
+namespace Scripts.Infrastructure.States
 {
     public class GameStateMachine
     {
         private readonly Dictionary<Type, IExitableState> _state;
         private IExitableState _activeState;
 
-        public GameStateMachine(SceneLoader sceneLoader) 
+        public GameStateMachine(SceneLoader sceneLoader, AllServices services)
         {
             _state = new Dictionary<Type, IExitableState>
             {
-                [typeof(BootstrapState)] = new BootstrapState(this,sceneLoader),
-                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader),
+                [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, services),
+                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader,services.Single<IGameFactory>()),
                 [typeof(GameLoopState)] = new GameLoopState(this),
             };
         }
 
-        public void Enter<TState>()where TState : class, IState
+        public void Enter<TState>() where TState : class, IState
         {
             IState state = ChangeState<TState>();
             state.Enter();
         }
 
-        public void Enter<TState, TPayload>(TPayload payload ) where TState : class, IPayloadedState<TPayload>
+        public void Enter<TState, TPayload>(TPayload payload) where TState : class, IPayloadedState<TPayload>
         {
             TState state = ChangeState<TState>();
             state.Enter(payload);

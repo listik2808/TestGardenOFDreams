@@ -1,22 +1,24 @@
-﻿using UnityEngine;
+﻿using Scripts.Infrastructure.Factory;
+using UnityEngine;
 
-namespace Scripts.Infrastructure
+namespace Scripts.Infrastructure.States
 {
     public class LoadLevelState : IPayloadedState<string>
     {
-        private const string HadPath = "Hud/Hud";
         private readonly GameStateMachine _stateMachine;
         private readonly SceneLoader _sceneLoader;
+        private readonly IGameFactory _gameFactory;
 
-        public LoadLevelState(GameStateMachine stateMachine,SceneLoader sceneLoader)
+        public LoadLevelState(GameStateMachine stateMachine, SceneLoader sceneLoader, IGameFactory gameFactory)
         {
             _stateMachine = stateMachine;
             _sceneLoader = sceneLoader;
+            _gameFactory = gameFactory;
         }
 
         public void Enter(string sceneName)
         {
-            _sceneLoader.Load(sceneName,OnLoaded);
+            _sceneLoader.Load(sceneName, OnLoaded);
         }
 
         public void Exit()
@@ -24,14 +26,8 @@ namespace Scripts.Infrastructure
         }
         private void OnLoaded()
         {
-            GameObject had = Instantiate(HadPath);
+            GameObject had = _gameFactory.CreateHud();
             _stateMachine.Enter<GameLoopState>();
-        }
-
-        private static GameObject Instantiate(string path)
-        {
-            GameObject prefab = Resources.Load<GameObject>(path);
-            return Object.Instantiate(prefab);
         }
     }
 }

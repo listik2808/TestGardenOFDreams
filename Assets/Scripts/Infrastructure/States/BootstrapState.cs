@@ -1,23 +1,28 @@
-﻿using System;
+﻿using Scripts.Infrastructure.AssetManagement;
+using Scripts.Infrastructure.Factory;
+using Scripts.Infrastructure.Services;
 
-namespace Scripts.Infrastructure
+namespace Scripts.Infrastructure.States
 {
     public class BootstrapState : IState
     {
         private const string Initial = "Initial";
         private readonly GameStateMachine _stateMachine;
         private readonly SceneLoader _sceneLoader;
+        private readonly AllServices _services;
 
-        public BootstrapState(GameStateMachine stateMachine, SceneLoader sceneLoader)
+        public BootstrapState(GameStateMachine stateMachine, SceneLoader sceneLoader, AllServices services)
         {
             _stateMachine = stateMachine;
             _sceneLoader = sceneLoader;
+            _services = services;
+
+            RegisterServices();
         }
 
 
         public void Enter()
         {
-            RegisterServices();
             _sceneLoader.Load(Initial, onLoaded: EnterLoadLevel);
         }
 
@@ -27,11 +32,13 @@ namespace Scripts.Infrastructure
 
         private void EnterLoadLevel()
         {
-            _stateMachine.Enter<LoadLevelState,string>("Main");
+            _stateMachine.Enter<LoadLevelState, string>("Main");
         }
 
         private void RegisterServices()
         {
+           _services.RegisterSingle<IAsset>(new AssetProvider());
+           _services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IAsset>()));
         }
     }
 }
