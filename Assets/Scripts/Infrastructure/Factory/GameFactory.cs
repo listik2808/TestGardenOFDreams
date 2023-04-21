@@ -46,11 +46,11 @@ namespace Scripts.Infrastructure.Factory
                 if(inventary.TryGetComponent(out InventoryCell inventoryCell))
                 {
                     _spawnerInventory.SetCellInventory(inventoryCell);
-                    //RegisterProgressWatchers(inventary);
+                    RegisterProgressWatchers(inventary);
                 }
                 
             }
-            //ActivateSlots();
+            ActivateSlots();
         }
 
         private void ActivateSlots()
