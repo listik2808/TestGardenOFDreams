@@ -1,6 +1,4 @@
-﻿
-
-using Scripts.Data;
+﻿using Scripts.Data;
 
 namespace Scripts.Infrastructure.Services.PersistenProgress
 {
