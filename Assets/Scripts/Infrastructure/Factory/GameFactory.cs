@@ -1,16 +1,15 @@
 ﻿using Scripts.Infrastructure.AssetManagement;
 using Scripts.Infrastructure.Services.PersistenProgress;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Scripts.Infrastructure.Factory
 {
     public class GameFactory : IGameFactory
     {
         private readonly IAsset _asset;
-        private  SpawnerInventory _spawnerInventory;
+        private  Inventory _inventory;
+        private Hud _hud;
 
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
@@ -24,43 +23,47 @@ namespace Scripts.Infrastructure.Factory
             InstaitiateRegistered(AssetPath.HadPath);
 
         public void CreateCellInventary() => 
-            InstaitiateRegistered(AssetPath.CellPath, _spawnerInventory.InventoryTransform);
+            InstaitiateRegistered(AssetPath.CellPath, _inventory.InventoryTransform);
 
         private GameObject InstaitiateRegistered(string prefabPath)
         {
             GameObject gameObject = _asset.Instantiate(prefabPath);
-
-            if (gameObject.TryGetComponent(out Hud hud))
-                _spawnerInventory = hud.SpawnerInventory;
+            SetComponents(gameObject);
 
             RegisterProgressWatchers(gameObject);
             return gameObject;
         }
 
+        private void SetComponents(GameObject gameObject)
+        {
+            if (gameObject.TryGetComponent(out Hud hud))
+            {
+                //_hud = hud;
+                _inventory = hud.inventory;
+            }
+        }
+
         private void InstaitiateRegistered(string prefabPath, Transform at)
         {
-            for (int i = 0; i < _spawnerInventory.CountSlots; i++)
+            for (int i = 0; i < _inventory.CountSlots; i++)
             {
-                Debug.Log(i);
                 GameObject inventary = _asset.Instantiate(prefabPath, at);
                 if(inventary.TryGetComponent(out InventoryCell inventoryCell))
                 {
-                    _spawnerInventory.SetCellInventory(inventoryCell);
+                    inventoryCell.AssignId(i + 1);
+                    _inventory.SetCellInventory(inventoryCell);
                     RegisterProgressWatchers(inventary);
                 }
-                
             }
             ActivateSlots();
         }
 
         private void ActivateSlots()
         {
-            List<InventoryCell> cell = _spawnerInventory.InventoryCells;
-            for (int i = 0; i < _spawnerInventory.OpenSlot; i++)
+            for (int i = 0; i < _inventory.OpenSlot; i++)
             {
-                cell[i].Activate();
+                _inventory.InventoryCells[i].Activate();
             }
-            
         }
 
         private void RegisterProgressWatchers(GameObject gameObject)
@@ -82,7 +85,5 @@ namespace Scripts.Infrastructure.Factory
 
             ProgressReaders.Add(progressReader);
         }
-
-        
     }
 }

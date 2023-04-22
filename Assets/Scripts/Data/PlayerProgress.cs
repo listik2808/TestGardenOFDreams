@@ -5,14 +5,14 @@ namespace Scripts.Data
     [Serializable]
     public class PlayerProgress
     {
-        public KillData KillData;
+        public OpenData OpenData;
         public WorldData WorldData;
         public CellInventory CellInventory;
 
         public PlayerProgress(string initialLevel) 
         {
             WorldData = new WorldData(initialLevel);
-            KillData = new KillData();
+            OpenData = new OpenData();
             CellInventory = new CellInventory();
         }
     }

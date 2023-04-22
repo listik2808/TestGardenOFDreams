@@ -1,0 +1,1 @@
+{"OpenData":{"AddSlote":[]},"WorldData":{"LevelScene":{"Level":"Main"}},"CellInventory":{"OpenSlots":1,"Id":[1,2,3,4],"CountSlots":5,"CurrentId":4,"InventoryCells":[]}}

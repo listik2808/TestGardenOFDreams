@@ -7,7 +7,6 @@ namespace Scripts.Infrastructure.Services.SaveLoade
 {
     public class SaveLoadService : ISaveLoadService
     {
-        private const string ProgressKey = "Progress";
         private readonly IPersistenProgressService _progressService;
         private readonly IGameFactory _gameFactory;
 
@@ -17,28 +16,26 @@ namespace Scripts.Infrastructure.Services.SaveLoade
         {
             _progressService = progressService;
             _gameFactory = gameFactory;
+            SaveLoad.Init();
         }
 
         public void SaveProgress()
         {
-            foreach (ISavedProgress progressWriters in _gameFactory.ProgressWriters)
+            foreach (ISavedProgress progressWriter in _gameFactory.ProgressWriters)
             {
-                progressWriters.UpadeteProgress(_progressService.Progress);
+                progressWriter.UpdateProgress(_progressService.Progress);
             }
-            //_json = _progressService.Progress.ToJson();
-            _json = JsonUtility.ToJson(_progressService.Progress.CellInventory.InventoryCells);
-            Debug.Log(_json);
+            _json = JsonUtility.ToJson(_progressService.Progress);
+            SaveLoad.Save(_json);
         }
 
         public PlayerProgress LoadProgress()
         {
-            if(_json == null)
+            if (_json != null)
             {
-                Debug.Log("11");
-                PlayerProgress curent = JsonUtility.FromJson<PlayerProgress>(_json);
-                //PlayerProgress curent = _json.ToDeserialized<PlayerProgress>();
-                Debug.Log(curent);
-                return curent;
+                _json = SaveLoad.Load();
+                _progressService.Progress = JsonUtility.FromJson<PlayerProgress>(_json);
+                return _progressService.Progress;
             }
             return _progressService.Progress;
         }

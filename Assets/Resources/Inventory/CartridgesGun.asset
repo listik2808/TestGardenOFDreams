@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfbdd072ef213cb4db775f76ba2ac79e, type: 3}
-  m_Name: InventoryItem
+  m_Name: CartridgesGun
   m_EditorClassIdentifier: 
-  Name: Putron1
+  TypeItem: 1
+  Name: Item1
   Icon: {fileID: 21300000, guid: 5033c11134b851f478bf6f68b0753022, type: 3}
-  Prefab: {fileID: 2110140097402616766, guid: d9c14eb75acdea14e92655d89e73c1a3, type: 3}
-  Stac: 0
+  Stac: 2
+  Count: 3
+  Weight: 0.01

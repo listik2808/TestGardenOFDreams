@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Hud : MonoBehaviour
 {
-    [SerializeField] private SpawnerInventory _spawnerInventory;
+    [SerializeField] private Inventory _inventory;
 
-    public SpawnerInventory SpawnerInventory => _spawnerInventory;
+    public Inventory inventory => _inventory;
 }

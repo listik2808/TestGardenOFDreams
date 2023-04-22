@@ -12,6 +12,5 @@ namespace Scripts.Infrastructure.Factory
         void Cleanup();
         GameObject CreateHud();
         void CreateCellInventary();
-        //void ActivateSlots();
     }
 }

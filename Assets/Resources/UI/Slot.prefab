@@ -112,6 +112,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94ec32e70801cbf4b88f2d43dd74565d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentItem:
+  - {fileID: 11400000, guid: e7e5e8ba35cc0774685d6673863590f4, type: 2}
+  - {fileID: 11400000, guid: c152e764dcbf5c14e877d5f779ee9c8a, type: 2}
+  _isActiv: 0
+  _countStac: {fileID: 1483705822360330592}
 --- !u!1 &3146296009765740112
 GameObject:
   m_ObjectHideFlags: 0

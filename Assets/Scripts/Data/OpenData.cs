@@ -4,8 +4,8 @@ using System.Collections.Generic;
 namespace Scripts.Data
 {
     [Serializable]
-    public class KillData
+    public class OpenData
     {
-        public List<string>ClearedSlote = new List<string>();
+        public List<Item>AddSlote = new List<Item>();
     }
 }
