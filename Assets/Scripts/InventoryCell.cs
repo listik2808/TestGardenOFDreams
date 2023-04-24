@@ -1,19 +1,48 @@
 using Scripts.Data;
 using Scripts.Infrastructure.Services.PersistenProgress;
 using Scripts.Infrastructure.Services.SaveLoade;
-using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryCell : MonoBehaviour,ISavedProgress
 {
-    [SerializeField] private List<Item> _currentItem = new List<Item>();
+    [SerializeField] private Image _iconSlot;
     [SerializeField] private bool _isActiv = false;
-    [SerializeField] private TMP_Text _countStac;
+    [SerializeField] private TMP_Text _countStacText;
+    private Item _currentItem;
     private int _id;
+    private int _currentCountItem;
+    private int _maxCountPatron;
+    private float _weightCurrentPatrons;
+    private bool _isFull = false;
 
     public bool IsActiv => _isActiv;
-    public int Id => _id;
+    public Item CellItem => _currentItem;
+    public bool IsFull => _isFull;
+    public int MaxCountItem => _maxCountPatron;
+
+    private void Awake()
+    {
+        _countStacText.alpha = 0;
+    }
+
+    public void AssignItemCell(Item item)
+    {
+        if (_currentItem == null)
+        {
+            _currentItem = item;
+            AcceptData();
+        }
+        else
+        {
+            _currentCountItem += _currentItem.GetStacPatron();
+            CheckCompleteness();
+        }
+        AddWeight();
+        ShowCountItem();
+    }
 
     public void AssignId(int id)
     {
@@ -36,19 +65,48 @@ public class InventoryCell : MonoBehaviour,ISavedProgress
         string json = SaveLoad.Load();
         progress = JsonUtility.FromJson<PlayerProgress>(json);
         _id = progress.CellInventory.GetId();
-        Debug.Log(_id + "Устанавливаю _id");
     }
 
     public void UpdateProgress(PlayerProgress progress)
     {
-        Debug.Log(_id);
         if (_isActiv == true)
         {
-            Debug.Log(_id + "Вошел");
             progress.CellInventory.AddId(_id);
             string json = JsonUtility.ToJson(progress.CellInventory.Id);
             SaveLoad.Save(json);
-            Debug.Log(progress.CellInventory.Id + " Сохранить _id");
+        }
+    }
+
+    private void AcceptData()
+    {
+        _iconSlot.sprite = _currentItem.Icon;
+        _currentCountItem = _currentItem.GetStacPatron();
+        _maxCountPatron = _currentItem.GetMaxCount(_currentCountItem);
+    }
+
+    private void AddWeight()
+    {
+        _weightCurrentPatrons = _currentItem.AddWeightItem(_currentCountItem);
+    }
+
+    private void ShowCountItem()
+    {
+        _countStacText.text = _currentCountItem.ToString();
+        if (_currentCountItem > 1)
+            _countStacText.alpha = 100;
+    }
+
+    private void CheckCompleteness()
+    {
+        int stac = _currentItem.GetStacPatron();
+        int newcount = _currentCountItem + stac;
+        if (newcount <= _maxCountPatron)
+        {
+            _isFull = false;
+        }
+        else
+        {
+            _isFull = true;
         }
     }
 }

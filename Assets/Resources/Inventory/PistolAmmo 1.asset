@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfbdd072ef213cb4db775f76ba2ac79e, type: 3}
-  m_Name: CartridgesGun
+  m_Script: {fileID: 11500000, guid: 3162ac30fb999b34dbb43cc63c25542e, type: 3}
+  m_Name: PistolAmmo 1
   m_EditorClassIdentifier: 
-  TypeItem: 1
-  Name: Item1
-  Icon: {fileID: 21300000, guid: 5033c11134b851f478bf6f68b0753022, type: 3}
-  Stac: 2
-  Count: 3
-  Weight: 0.01
+  _typeItem: 1
+  _icon: {fileID: 21300000, guid: 5033c11134b851f478bf6f68b0753022, type: 3}
+  _maxCount: 50
+  _countItem: 10
+  _weight: 0.01

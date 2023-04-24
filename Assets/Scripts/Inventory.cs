@@ -14,7 +14,7 @@ namespace Scripts
         [SerializeField] private int _countSlots;
         [SerializeField] private int _openSlot = 15;
         [SerializeField] private Transform _inventoryTransform;
-        [SerializeField] private GameObject _slotPrefab;
+        private Item _item;
         private string json;
         public List<InventoryCell> _inventoryCells = new List<InventoryCell>();
 
@@ -38,9 +38,6 @@ namespace Scripts
             SaveLoad.Save(json);
         }
 
-        private string CurrentLevel() => 
-            SceneManager.GetActiveScene().name;
-
         public void LoadProgress(PlayerProgress progress)
         {
             json = SaveLoad.Load();
@@ -48,14 +45,35 @@ namespace Scripts
             {
                 progress = JsonUtility.FromJson<PlayerProgress>(json);
                 _openSlot = progress.CellInventory.CurrentId;
-                Debug.Log(_openSlot + "Inventory  _openSlot");
                 int countSlot = progress.CellInventory.CountSlots;
-                Debug.Log(countSlot + "Inventory countSlot");
                 if (countSlot != 0)
                 {
                     _countSlots = countSlot;
                 }
             }
         }
+
+        public void SetItem(List<Item> items)
+        {
+            foreach (var item in items)
+            {
+                foreach (var cell in _inventoryCells)
+                {
+                    if (!cell.IsActiv)
+                    {
+                        return;
+                    }
+                    else if (cell.CellItem == null || cell.CellItem.TypeItem == item.TypeItem && !cell.IsFull)
+                    {
+                        Debug.Log("1");
+                        cell.AssignItemCell(item);
+                        break;
+                    }
+                }
+            }
+        }
+
+        private string CurrentLevel() => 
+            SceneManager.GetActiveScene().name;
     }
 }

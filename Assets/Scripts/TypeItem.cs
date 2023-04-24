@@ -1,5 +1,5 @@
 ﻿public enum TypeItem
 {
-    Patronpistol = 1,
+    PatronPistol = 1,
     PatronRifle =2,
 }

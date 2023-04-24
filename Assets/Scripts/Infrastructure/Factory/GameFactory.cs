@@ -38,9 +38,11 @@ namespace Scripts.Infrastructure.Factory
         {
             if (gameObject.TryGetComponent(out Hud hud))
             {
-                //_hud = hud;
-                _inventory = hud.inventory;
+                _hud = hud;
+                _inventory = hud.Inventory;
             }
+            AmmoDepot ammoDepot = _hud.gameObject.GetComponentInChildren<AmmoDepot>();
+            _hud.SetAmmoDepot(ammoDepot);
         }
 
         private void InstaitiateRegistered(string prefabPath, Transform at)

@@ -1,15 +1,15 @@
+using UnityEditor.PackageManager;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "InventoryItem",menuName = "ScriptableObject/InventoryItem", order = 61)]
-public class Item : ScriptableObject
+public abstract class Item : ScriptableObject
 {
-    public TypeItem TypeItem;
-    public string Name = "Item";
-    public Sprite Icon;
-    [Range(1,5f)]
-    public int Stac;
-    [Range(1,10f)]
-    public int Count;
-    [Range(0.01f, 10f)]
-    public float Weight;
+    [SerializeField] private TypeItem _typeItem;
+    [SerializeField] private Sprite _icon;
+
+    public TypeItem TypeItem => _typeItem;
+    public Sprite Icon => _icon;
+
+    public abstract int GetStacPatron();
+    public abstract float AddWeightItem(int currentCount);
+    public abstract int GetMaxCount(int currentCount);
 }
