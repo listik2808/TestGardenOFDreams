@@ -20,7 +20,7 @@ public class RifleAmmo : Item
         return _countItem;
     }
 
-    public override int  GetMaxCount(int current)
+    public override int  GetMaxCount()
     {
         return _maxCount;
     }

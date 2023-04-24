@@ -11,5 +11,5 @@ public abstract class Item : ScriptableObject
 
     public abstract int GetStacPatron();
     public abstract float AddWeightItem(int currentCount);
-    public abstract int GetMaxCount(int currentCount);
+    public abstract int GetMaxCount();
 }

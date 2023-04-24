@@ -1,5 +1,7 @@
-﻿using Scripts.Infrastructure.AssetManagement;
+﻿using Scripts.Data;
+using Scripts.Infrastructure.AssetManagement;
 using Scripts.Infrastructure.Services.PersistenProgress;
+using Scripts.Infrastructure.Services.SaveLoade;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,15 +10,17 @@ namespace Scripts.Infrastructure.Factory
     public class GameFactory : IGameFactory
     {
         private readonly IAsset _asset;
+        private readonly IPersistenProgressService _progressService;
         private  Inventory _inventory;
         private Hud _hud;
 
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 
-        public GameFactory(IAsset asset)
+        public GameFactory(IAsset asset, IPersistenProgressService progressService)
         {
             _asset = asset;
+            _progressService = progressService;
         }
 
         public GameObject CreateHud() =>
@@ -43,6 +47,17 @@ namespace Scripts.Infrastructure.Factory
             }
             AmmoDepot ammoDepot = _hud.gameObject.GetComponentInChildren<AmmoDepot>();
             _hud.SetAmmoDepot(ammoDepot);
+            GetOpensSlots();
+        }
+
+        private void GetOpensSlots()
+        {
+            string json = SaveLoad.Load();
+            if(json != null)
+            {
+                _progressService.Progress = JsonUtility.FromJson<PlayerProgress>(json);
+                _inventory.SetOpenSlote(_progressService.Progress.CellInventory.CurrentId);
+            }
         }
 
         private void InstaitiateRegistered(string prefabPath, Transform at)

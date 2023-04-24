@@ -1225,8 +1225,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44486436ae2d53d498e0a6471425b23b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _countSlots: 5
-  _openSlot: 3
+  _countSlots: 10
+  _openSlot: 5
   _inventoryTransform: {fileID: 6970593186914102972}
   _inventoryCells: []
 --- !u!1 &6590708199475950956

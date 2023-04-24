@@ -28,6 +28,11 @@ namespace Scripts
             _inventoryCells.Add(inventoryCell);
         }
 
+        public void SetOpenSlote(int openslote)
+        {
+            _openSlot = openslote;
+        }
+
         public void UpdateProgress(PlayerProgress progress)
         {
             progress.WorldData.LevelScene = new NameSceneI(CurrentLevel());
@@ -53,7 +58,7 @@ namespace Scripts
             }
         }
 
-        public void SetItem(List<Item> items)
+        public void SetPatron(List<Item> items)
         {
             foreach (var item in items)
             {
@@ -65,7 +70,6 @@ namespace Scripts
                     }
                     else if (cell.CellItem == null || cell.CellItem.TypeItem == item.TypeItem && !cell.IsFull)
                     {
-                        Debug.Log("1");
                         cell.AssignItemCell(item);
                         break;
                     }

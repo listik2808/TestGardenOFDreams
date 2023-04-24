@@ -33,8 +33,8 @@ namespace Scripts.Infrastructure.States
         private void OnLoaded()
         {
             GameObject had = _gameFactory.CreateHud();
-            InformProgressReaders();
             _gameFactory.CreateCellInventary();
+            InformProgressReaders();
             _stateMachine.Enter<GameLoopState>();
         }
 

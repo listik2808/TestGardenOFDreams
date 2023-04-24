@@ -18,6 +18,6 @@ public class Hud : MonoBehaviour
 
     public void SetAmmo()
     {
-        _inventory.SetItem(_ammoDepot.Items);
+        _inventory.SetPatron(_ammoDepot.Items);
     }
 }

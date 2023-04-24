@@ -1,8 +1,8 @@
 using Scripts.Data;
 using Scripts.Infrastructure.Services.PersistenProgress;
 using Scripts.Infrastructure.Services.SaveLoade;
+using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,17 +11,18 @@ public class InventoryCell : MonoBehaviour,ISavedProgress
     [SerializeField] private Image _iconSlot;
     [SerializeField] private bool _isActiv = false;
     [SerializeField] private TMP_Text _countStacText;
-    private Item _currentItem;
+
+    private Item _item;
     private int _id;
     private int _currentCountItem;
-    private int _maxCountPatron;
-    private float _weightCurrentPatrons;
+    private int _maxCountItems;
+    private float _weightCurrentItems;
     private bool _isFull = false;
+    private string _json;
 
     public bool IsActiv => _isActiv;
-    public Item CellItem => _currentItem;
+    public Item CellItem => _item;
     public bool IsFull => _isFull;
-    public int MaxCountItem => _maxCountPatron;
 
     private void Awake()
     {
@@ -30,64 +31,87 @@ public class InventoryCell : MonoBehaviour,ISavedProgress
 
     public void AssignItemCell(Item item)
     {
-        if (_currentItem == null)
+        if (_item == null)
         {
-            _currentItem = item;
+            _item = item;
             AcceptData();
         }
         else
         {
-            _currentCountItem += _currentItem.GetStacPatron();
-            CheckCompleteness();
+            AddStack();
         }
         AddWeight();
         ShowCountItem();
     }
 
+    private void AddStack()
+    {
+        _currentCountItem += _item.GetStacPatron();
+        CheckCompleteness();
+    }
+
     public void AssignId(int id)
     {
-        if(id > 0)
-            _id = id;
+        _id = id;
     }
 
-    public void Activate()
-    {
+    public void Activate() => 
         _isActiv = true;
-    }
-
-    public void Deactivate() 
-    {
-        _isActiv = false;
-    }
 
     public void LoadProgress(PlayerProgress progress)
     {
         string json = SaveLoad.Load();
-        progress = JsonUtility.FromJson<PlayerProgress>(json);
-        _id = progress.CellInventory.GetId();
+        if(json != null)
+        {
+            progress = JsonUtility.FromJson<PlayerProgress>(json);
+            LoadItems(progress);
+            InstallCharacteristics(progress);
+        }
     }
 
     public void UpdateProgress(PlayerProgress progress)
     {
         if (_isActiv == true)
         {
-            progress.CellInventory.AddId(_id);
-            string json = JsonUtility.ToJson(progress.CellInventory.Id);
-            SaveLoad.Save(json);
+            SaveCharacteristics(progress);
         }
+    }
+
+    private void InstallCharacteristics(PlayerProgress progress)
+    {
+        if (_item != null)
+        {
+            LoadSpriteItems(progress);
+            LoadCurentCountItems(progress);
+            SetMaxCountItems();
+            AddWeight();
+            CheckCompleteness();
+            ShowCountItem();
+        }
+    }
+
+    private void SaveCharacteristics(PlayerProgress progress)
+    {
+        progress.CellInventory.AddId(_id);
+        progress.CellInventory.AddSpriteItem(_iconSlot.sprite,_id);
+        progress.CellInventory.AddCurrentCoutItem(_currentCountItem,_id);
+        progress.CellInventory.AddItem(_item,_id);
+        _json = JsonUtility.ToJson(progress.CellInventory);
+        SaveLoad.Save(_json);
     }
 
     private void AcceptData()
     {
-        _iconSlot.sprite = _currentItem.Icon;
-        _currentCountItem = _currentItem.GetStacPatron();
-        _maxCountPatron = _currentItem.GetMaxCount(_currentCountItem);
+        _iconSlot.sprite = _item.Icon;
+        _currentCountItem = _item.GetStacPatron();
+        SetMaxCountItems();
     }
 
-    private void AddWeight()
-    {
-        _weightCurrentPatrons = _currentItem.AddWeightItem(_currentCountItem);
-    }
+    private void SetMaxCountItems() => 
+        _maxCountItems = _item.GetMaxCount();
+
+    private void AddWeight() => 
+        _weightCurrentItems = _item.AddWeightItem(_currentCountItem);
 
     private void ShowCountItem()
     {
@@ -98,15 +122,44 @@ public class InventoryCell : MonoBehaviour,ISavedProgress
 
     private void CheckCompleteness()
     {
-        int stac = _currentItem.GetStacPatron();
+        int stac = _item.GetStacPatron();
         int newcount = _currentCountItem + stac;
-        if (newcount <= _maxCountPatron)
-        {
+        if (newcount <= _maxCountItems)
             _isFull = false;
-        }
         else
-        {
             _isFull = true;
+    }
+
+    private void LoadCurentCountItems(PlayerProgress progress)
+    {
+        for (int i = 0; i < progress.CellInventory.CurrentCountItem.Count; i++)
+        {
+            if(_id - 1 == i)
+            {
+                _currentCountItem = progress.CellInventory.CurrentCountItem[i];
+            }
+        }
+    }
+
+    private void LoadSpriteItems(PlayerProgress progress)
+    {
+        for (int i = 0; i < progress.CellInventory.Sprite.Count; i++)
+        {
+            if(_id - 1 == i)
+            {
+                _iconSlot.sprite = progress.CellInventory.Sprite[i];
+            }
+        }
+    }
+
+    private void LoadItems(PlayerProgress progress)
+    {
+        for (int i = 0; i < progress.CellInventory.Items.Count; i++)
+        {
+            if (_id - 1 == i)
+            {
+                _item = progress.CellInventory.Items[i];
+            }
         }
     }
 }

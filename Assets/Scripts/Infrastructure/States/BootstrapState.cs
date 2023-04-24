@@ -41,7 +41,7 @@ namespace Scripts.Infrastructure.States
         {
             _services.RegisterSingle<IAsset>(new AssetProvider());
             _services.RegisterSingle<IPersistenProgressService>(new PersistenProgressService());
-            _services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IAsset>()));
+            _services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IAsset>(), _services.Single<IPersistenProgressService>()));
             _services.RegisterSingle<ISaveLoadService>(new SaveLoadService(_services.Single<IPersistenProgressService>(),_services.Single<IGameFactory>()));
         }
     }
