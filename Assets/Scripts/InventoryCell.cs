@@ -1,7 +1,6 @@
 using Scripts.Data;
 using Scripts.Infrastructure.Services.PersistenProgress;
 using Scripts.Infrastructure.Services.SaveLoade;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,12 +41,6 @@ public class InventoryCell : MonoBehaviour,ISavedProgress
         }
         AddWeight();
         ShowCountItem();
-    }
-
-    private void AddStack()
-    {
-        _currentCountItem += _item.GetStacPatron();
-        CheckCompleteness();
     }
 
     public void AssignId(int id)
@@ -100,10 +93,16 @@ public class InventoryCell : MonoBehaviour,ISavedProgress
         SaveLoad.Save(_json);
     }
 
+    private void AddStack()
+    {
+        _currentCountItem += _item.GetStacItem();
+        CheckCompleteness();
+    }
+
     private void AcceptData()
     {
         _iconSlot.sprite = _item.Icon;
-        _currentCountItem = _item.GetStacPatron();
+        _currentCountItem = _item.GetStacItem();
         SetMaxCountItems();
     }
 
@@ -122,7 +121,7 @@ public class InventoryCell : MonoBehaviour,ISavedProgress
 
     private void CheckCompleteness()
     {
-        int stac = _item.GetStacPatron();
+        int stac = _item.GetStacItem();
         int newcount = _currentCountItem + stac;
         if (newcount <= _maxCountItems)
             _isFull = false;

@@ -11,6 +11,7 @@ namespace Scripts.Infrastructure.Factory
     {
         private readonly IAsset _asset;
         private readonly IPersistenProgressService _progressService;
+        private readonly int StartId = 1;
         private  Inventory _inventory;
         private Hud _hud;
 
@@ -32,24 +33,22 @@ namespace Scripts.Infrastructure.Factory
         private GameObject InstaitiateRegistered(string prefabPath)
         {
             GameObject gameObject = _asset.Instantiate(prefabPath);
-            SetComponents(gameObject);
+            ComponentSearch(gameObject);
 
             RegisterProgressWatchers(gameObject);
             return gameObject;
         }
 
-        private void SetComponents(GameObject gameObject)
+        private void ComponentSearch(GameObject gameObject)
         {
-            if (gameObject.TryGetComponent(out Hud hud))
-            {
-                _hud = hud;
-                _inventory = hud.Inventory;
-            }
+            _hud = gameObject.GetComponent<Hud>();
+            _inventory = _hud.Inventory;
             AmmoDepot ammoDepot = _hud.gameObject.GetComponentInChildren<AmmoDepot>();
-            _hud.SetAmmoDepot(ammoDepot);
+            ButtonAddRandomItems buttonAddRandom = _hud.gameObject.GetComponentInChildren<ButtonAddRandomItems>();
+            _hud.SetComponent(ammoDepot, buttonAddRandom);
             GetOpensSlots();
         }
-
+        //Надо найти этому место
         private void GetOpensSlots()
         {
             string json = SaveLoad.Load();
@@ -67,7 +66,7 @@ namespace Scripts.Infrastructure.Factory
                 GameObject inventary = _asset.Instantiate(prefabPath, at);
                 if(inventary.TryGetComponent(out InventoryCell inventoryCell))
                 {
-                    inventoryCell.AssignId(i + 1);
+                    inventoryCell.AssignId(i + StartId);
                     _inventory.SetCellInventory(inventoryCell);
                     RegisterProgressWatchers(inventary);
                 }
