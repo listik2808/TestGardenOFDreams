@@ -45,7 +45,8 @@ namespace Scripts.Infrastructure.Factory
             _inventory = _hud.Inventory;
             AmmoDepot ammoDepot = _hud.gameObject.GetComponentInChildren<AmmoDepot>();
             ButtonAddRandomItems buttonAddRandom = _hud.gameObject.GetComponentInChildren<ButtonAddRandomItems>();
-            _hud.SetComponent(ammoDepot, buttonAddRandom);
+            ButtonDeletItemCell buttonDeletItemCell = _hud.gameObject.GetComponentInChildren<ButtonDeletItemCell>();
+            _hud.SetComponent(ammoDepot, buttonAddRandom, buttonDeletItemCell);
             GetOpensSlots();
         }
         //Надо найти этому место

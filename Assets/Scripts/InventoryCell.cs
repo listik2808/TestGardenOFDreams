@@ -22,6 +22,7 @@ public class InventoryCell : MonoBehaviour,ISavedProgress
     public bool IsActiv => _isActiv;
     public Item CellItem => _item;
     public bool IsFull => _isFull;
+    public int Id => _id;
 
     private void Awake()
     {
@@ -41,6 +42,18 @@ public class InventoryCell : MonoBehaviour,ISavedProgress
         }
         AddWeight();
         ShowCountItem();
+    }
+
+    public void Clir()
+    {
+        _item = null;
+        _currentCountItem = 0;
+        _weightCurrentItems = 0;
+        _isFull = false;
+        _maxCountItems = 0;
+        _iconSlot.sprite = null;
+        _countStacText.alpha = 0;
+        _iconSlot.enabled =false;
     }
 
     public void AssignId(int id)
@@ -102,6 +115,7 @@ public class InventoryCell : MonoBehaviour,ISavedProgress
     private void AcceptData()
     {
         _iconSlot.sprite = _item.Icon;
+        _iconSlot.enabled = true;
         _currentCountItem = _item.GetStacItem();
         SetMaxCountItems();
     }

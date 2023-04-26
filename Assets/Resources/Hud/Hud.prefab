@@ -935,6 +935,7 @@ GameObject:
   - component: {fileID: 6337523148674359154}
   - component: {fileID: 8531163197648305475}
   - component: {fileID: 2320499240016883192}
+  - component: {fileID: 1167855561765624206}
   m_Layer: 5
   m_Name: RemoveItems
   m_TagString: Untagged
@@ -1045,6 +1046,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1167855561765624206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5078740702785835743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3280d7d6dd1f7946b86b6194da8423c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 2320499240016883192}
 --- !u!1 &5490575543190722284
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static UnityEditor.Progress;
+using Random = UnityEngine.Random;
 
 namespace Scripts
 {
@@ -21,6 +22,7 @@ namespace Scripts
  
         private List<InventoryCell> _inventoryCells = new List<InventoryCell>();
         private List<Item> _items = new List<Item>();
+        private List<int> _idItems = new List<int>();
 
         public Transform InventoryTransform => _inventoryTransform;
         public int CountSlots => _countSlots;
@@ -37,6 +39,37 @@ namespace Scripts
         public void SetOpenSlote(int openslote)
         {
             _openSlot = openslote;
+        }
+
+        public void DeletItem()
+        {
+            WriteOccupiedCells(_idItems);
+            int random = Random.Range(0, _idItems.Count);
+            int id = _idItems[random];
+            ClirItem(id);
+            _idItems.Clear();
+        }
+
+        private void ClirItem(int id)
+        {
+            foreach (var item in _inventoryCells)
+            {
+                if (item.Id == id)
+                {
+                    item.Clir();
+                }
+            }
+        }
+
+        private void WriteOccupiedCells(List<int> idItems)
+        {
+            foreach (var item in _inventoryCells)
+            {
+                if(item.CellItem != null)
+                {
+                    idItems.Add(item.Id);
+                }
+            }
         }
 
         public void UpdateProgress(PlayerProgress progress)
