@@ -50,6 +50,40 @@ namespace Scripts
             _idItems.Clear();
         }
 
+        public void Attac()
+        {
+            RecordingCellsPatron(_idItems);
+            if(_idItems.Count > 0)
+            {
+                int random = Random.Range(0, _idItems.Count);
+                int id = _idItems[random];
+                DeletCartridge(id);
+                _idItems.Clear();
+            }
+        }
+
+        private void RecordingCellsPatron(List<int> idItems)
+        {
+            foreach (var item in _inventoryCells)
+            {
+                if (item.CellItem != null && item.CellItem.ItemType == TypeItem.Consumables)
+                {
+                    idItems.Add(item.Id);
+                }
+            }
+        }
+
+        private void DeletCartridge(int id)
+        {
+            foreach (var item in _inventoryCells)
+            {
+                if (item.Id == id)
+                {
+                    item.TakeCartridge();
+                }
+            }
+        } 
+
         private void ClirItem(int id)
         {
             foreach (var item in _inventoryCells)

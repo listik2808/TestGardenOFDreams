@@ -3,6 +3,7 @@ using Scripts.Infrastructure.AssetManagement;
 using Scripts.Infrastructure.Services.PersistenProgress;
 using Scripts.Infrastructure.Services.SaveLoade;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Scripts.Infrastructure.Factory
@@ -46,7 +47,8 @@ namespace Scripts.Infrastructure.Factory
             AmmoDepot ammoDepot = _hud.gameObject.GetComponentInChildren<AmmoDepot>();
             ButtonAddRandomItems buttonAddRandom = _hud.gameObject.GetComponentInChildren<ButtonAddRandomItems>();
             ButtonDeletItemCell buttonDeletItemCell = _hud.gameObject.GetComponentInChildren<ButtonDeletItemCell>();
-            _hud.SetComponent(ammoDepot, buttonAddRandom, buttonDeletItemCell);
+            Attack attack = _hud.gameObject.GetComponentInChildren<Attack>();
+            _hud.SetComponent(ammoDepot, buttonAddRandom, buttonDeletItemCell,attack);
             GetOpensSlots();
         }
         //Надо найти этому место

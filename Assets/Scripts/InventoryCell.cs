@@ -44,6 +44,17 @@ public class InventoryCell : MonoBehaviour,ISavedProgress
         ShowCountItem();
     }
 
+    public void TakeCartridge()
+    {
+        _currentCountItem--;
+        ShowCountItem();
+        AddWeight();
+        if(_currentCountItem == 0)
+        {
+            Clir();
+        }
+    }
+
     public void Clir()
     {
         _item = null;

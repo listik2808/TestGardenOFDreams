@@ -16,6 +16,7 @@ public class Hud : MonoBehaviour
     private AmmoDepot _ammoDepot;
     private ButtonAddRandomItems _randomItems;
     private ButtonDeletItemCell _deletItemCell;
+    private Attack _attack;
     private List<Item> _items = new List<Item>();
 
     public Inventory Inventory => _inventory;
@@ -25,14 +26,21 @@ public class Hud : MonoBehaviour
         _inventory = GetComponentInChildren<Inventory>();
     }
 
-    public void SetComponent (AmmoDepot ammoDepot, ButtonAddRandomItems randomItems,ButtonDeletItemCell buttonDeletItem)
+    public void SetComponent (AmmoDepot ammoDepot, ButtonAddRandomItems randomItems,ButtonDeletItemCell buttonDeletItem,Attack attack)
     {
         _ammoDepot = ammoDepot;
         _randomItems = randomItems;
         _deletItemCell = buttonDeletItem;
+        _attack = attack;
         _ammoDepot.ButtonAddPatrons.onClick.AddListener(SetAmmo);
         _randomItems.AddRandomItems.onClick.AddListener(GetRandomItems);
         _deletItemCell.DeletItem.onClick.AddListener(DeletItemCell);
+        _attack.ButtonAttack.onClick.AddListener(Fire);
+    }
+
+    private void Fire()
+    {
+        _inventory.Attac();
     }
 
     private void DeletItemCell()
