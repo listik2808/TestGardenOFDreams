@@ -70,6 +70,10 @@ namespace Scripts
                     idItems.Add(item.Id);
                 }
             }
+            if(idItems.Count <= 0)
+            {
+                Debug.LogError("Все слоты пусты");
+            }
         }
 
         public void UpdateProgress(PlayerProgress progress)
