@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Scripts.ItemScriptableObject.Abstractitem;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "Cap", menuName = "Head/Cap", order = 66)]
 public class Cap : Head

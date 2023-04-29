@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Scripts.ItemScriptableObject.Abstractitem;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "BodyArmor", menuName = "Torso/BodyArmor", order = 65)]
 public class BodyArmor : Torso

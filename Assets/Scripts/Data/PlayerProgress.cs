@@ -7,11 +7,13 @@ namespace Scripts.Data
     {
         public WorldData WorldData;
         public CellInventory CellInventory;
+        public ButtonBuySlote buttonBuySlote;
 
         public PlayerProgress(string initialLevel) 
         {
             WorldData = new WorldData(initialLevel);
             CellInventory = new CellInventory();
+            buttonBuySlote = new ButtonBuySlote();
         }
     }
 }

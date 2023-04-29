@@ -1,6 +1,5 @@
 ﻿using Scripts.Infrastructure.Factory;
 using Scripts.Infrastructure.Services.PersistenProgress;
-using System;
 using UnityEngine;
 
 namespace Scripts.Infrastructure.States

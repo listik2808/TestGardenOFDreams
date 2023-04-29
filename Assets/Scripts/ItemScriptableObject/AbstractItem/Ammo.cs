@@ -1,3 +1,6 @@
-﻿public abstract class Ammo : Item
+﻿namespace Scripts.ItemScriptableObject.Abstractitem
 {
+    public abstract class Ammo : Item
+    {
+    }
 }

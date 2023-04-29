@@ -22,7 +22,6 @@ namespace Scripts.Infrastructure.States
             RegisterServices();
         }
 
-
         public void Enter()
         {
             _sceneLoader.Load(Initial, onLoaded: EnterLoadLevel);

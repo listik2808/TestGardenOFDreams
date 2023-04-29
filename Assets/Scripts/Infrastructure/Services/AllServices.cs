@@ -1,7 +1,4 @@
 ﻿
-using Scripts.Infrastructure.Factory;
-using System;
-
 namespace Scripts.Infrastructure.Services
 {
     public class AllServices

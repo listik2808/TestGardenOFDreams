@@ -1,4 +1,5 @@
-﻿using Scripts.Data;
+﻿using Scripts.Buttons;
+using Scripts.Data;
 using Scripts.Infrastructure.AssetManagement;
 using Scripts.Infrastructure.Services.PersistenProgress;
 using Scripts.Infrastructure.Services.SaveLoade;
@@ -15,6 +16,8 @@ namespace Scripts.Infrastructure.Factory
         private readonly int StartId = 1;
         private  Inventory _inventory;
         private Hud _hud;
+        private Wallet _wallet;
+        private List<ButtonBuyingSlot> _buyingSlots = new List<ButtonBuyingSlot>();
 
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
@@ -48,10 +51,12 @@ namespace Scripts.Infrastructure.Factory
             ButtonAddRandomItems buttonAddRandom = _hud.gameObject.GetComponentInChildren<ButtonAddRandomItems>();
             ButtonDeletItemCell buttonDeletItemCell = _hud.gameObject.GetComponentInChildren<ButtonDeletItemCell>();
             Attack attack = _hud.gameObject.GetComponentInChildren<Attack>();
-            _hud.SetComponent(ammoDepot, buttonAddRandom, buttonDeletItemCell,attack);
+            _wallet = _hud.gameObject.GetComponentInChildren<Wallet>();
+            AvailableButtonsPurchase availableButtonsPurchase = _hud.gameObject.GetComponentInChildren<AvailableButtonsPurchase>();
+            _hud.SetComponent(ammoDepot, buttonAddRandom, buttonDeletItemCell,attack, availableButtonsPurchase);
             GetOpensSlots();
         }
-        //Надо найти этому место
+
         private void GetOpensSlots()
         {
             string json = SaveLoad.Load();
@@ -67,14 +72,22 @@ namespace Scripts.Infrastructure.Factory
             for (int i = 0; i < _inventory.CountSlots; i++)
             {
                 GameObject inventary = _asset.Instantiate(prefabPath, at);
-                if(inventary.TryGetComponent(out InventoryCell inventoryCell))
+                if (inventary.TryGetComponent(out InventoryCell inventoryCell))
                 {
                     inventoryCell.AssignId(i + StartId);
                     _inventory.SetCellInventory(inventoryCell);
+                    _buyingSlots.Add(inventoryCell.GetComponentInChildren<ButtonBuyingSlot>());
                     RegisterProgressWatchers(inventary);
                 }
             }
             ActivateSlots();
+            ConfiguringSlotBuyButtons();
+        }
+
+        private void ConfiguringSlotBuyButtons()
+        {
+            _hud.AvailableButtonsPurchase.SetBuyButton(_buyingSlots);
+            _hud.AvailableButtonsPurchase.SetWallet(_wallet);
         }
 
         private void ActivateSlots()

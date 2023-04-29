@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Scripts.ItemScriptableObject.Abstractitem;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "Pistol", menuName = "Weapon/Pistol", order = 62)]
 public class Pistol : Weapon

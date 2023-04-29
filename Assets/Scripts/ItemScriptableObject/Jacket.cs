@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Scripts.ItemScriptableObject.Abstractitem;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "Jacket", menuName = "Torso/Jacket", order = 64)]
 public class Jacket : Torso

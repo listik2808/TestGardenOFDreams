@@ -1,12 +1,12 @@
 ﻿using Scripts.Data;
+using Scripts.Enum;
 using Scripts.Infrastructure.Services.PersistenProgress;
 using Scripts.Infrastructure.Services.SaveLoade;
+using Scripts.ItemScriptableObject.Abstractitem;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEditor.Progress;
 using Random = UnityEngine.Random;
 
 namespace Scripts
@@ -17,7 +17,7 @@ namespace Scripts
         [SerializeField] private int _countSlots;
         [SerializeField] private int _openSlot = 15;
         [SerializeField] private Transform _inventoryTransform;
-        private Item _item;
+        [SerializeField] private Mouse _mouse;
         private string _json;
  
         private List<InventoryCell> _inventoryCells = new List<InventoryCell>();
@@ -34,6 +34,7 @@ namespace Scripts
         public void SetCellInventory(InventoryCell inventoryCell)
         {
             _inventoryCells.Add(inventoryCell);
+            inventoryCell.SetMouse(_mouse);
         }
 
         public void SetOpenSlote(int openslote)
@@ -44,9 +45,12 @@ namespace Scripts
         public void DeletItem()
         {
             WriteOccupiedCells(_idItems);
-            int random = Random.Range(0, _idItems.Count);
-            int id = _idItems[random];
-            ClirItem(id);
+            if (_idItems.Count > 0)
+            {
+                int random = Random.Range(0, _idItems.Count);
+                int id = _idItems[random];
+                ClirItem(id);
+            }
             _idItems.Clear();
         }
 
@@ -106,7 +110,7 @@ namespace Scripts
             }
             if(idItems.Count <= 0)
             {
-                Debug.LogError("Все слоты пусты");
+                Debug.Log("Все слоты пусты!ОШИБКА!!!!");
             }
         }
 
@@ -158,7 +162,7 @@ namespace Scripts
                 {
                     if (!cell.IsActiv)
                     {
-                        break;
+                        return;
                     }
                     else if (cell.CellItem == null || cell.CellItem.NameItem == item.NameItem && !cell.IsFull)
                     {
